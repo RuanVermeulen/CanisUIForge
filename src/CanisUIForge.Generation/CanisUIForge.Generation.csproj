@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CanisUIForge.Core\CanisUIForge.Core.csproj" />
+    <ProjectReference Include="..\CanisUIForge.OpenApi\CanisUIForge.OpenApi.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Contracts\CanisUIForge.Contracts.csproj" />
   </ItemGroup>
 
 
