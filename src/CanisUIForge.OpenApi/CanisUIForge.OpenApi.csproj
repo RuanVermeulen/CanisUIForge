@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CanisUIForge.Core\CanisUIForge.Core.csproj" />
+  </ItemGroup>
+
+
+
+</Project>
