@@ -1,0 +1,574 @@
+# CanisUIForge – Technical & Functional Specification
+
+---
+
+# 1. Overview
+
+## 1.1 Product Name
+
+**CanisUIForge**
+
+## 1.2 Purpose
+
+CanisUIForge is a code generation tool that consumes a Swagger/OpenAPI definition and a Contracts source to generate fully structured UI applications.
+
+It supports generating:
+
+* Blazor applications
+* .NET MAUI applications
+* Both simultaneously
+
+The generated applications follow:
+
+* layered architecture
+* reusable component design
+* centralized styling
+* strict engineering standards (DRY, SOLID)
+* safe regeneration patterns
+* full test scaffolding (unit + UI automation)
+
+---
+
+# 2. Core Design Philosophy
+
+## 2.1 Contracts-First Generation
+
+Swagger is used for:
+
+* endpoint discovery
+* route structure
+* HTTP methods
+* controller grouping
+
+Contracts are used for:
+
+* request models
+* response models
+* namespaces
+* type correctness
+
+### Rule
+
+The generator must **not generate DTOs from Swagger** when contracts are provided.
+
+---
+
+## 2.2 Generated vs Manual Code Separation
+
+All generated code must:
+
+* be placed in dedicated generated folders or files
+* be safe to overwrite
+* never overwrite manual code
+
+### Pattern
+
+* `*.Generated.cs`
+* `Generated/` folders
+* partial classes for extension
+
+---
+
+## 2.3 Engineering Standards
+
+Generated code must:
+
+* follow DRY
+* follow SOLID
+* use explicit types (no `var`)
+* use global usings
+* avoid unofficial abbreviations
+* never use `ConfigureAwait`
+* use proper async/await patterns
+* be readable and production-quality
+
+---
+
+# 3. Inputs
+
+## 3.1 Required Inputs
+
+### Swagger Source
+
+* URL or file
+* JSON format
+
+### Contracts Source (MANDATORY)
+
+Supported modes:
+
+#### Project Reference Mode
+
+* Path to `.csproj`
+
+#### NuGet Reference Mode
+
+* Package ID
+* Version
+* Optional local feed
+
+---
+
+## 3.2 Optional Inputs
+
+* output path
+* namespace root
+* selected controllers
+* generation style per controller
+* test generation flags
+
+---
+
+# 4. Output
+
+## 4.1 Supported Targets
+
+* Blazor
+* MAUI
+* Both
+
+---
+
+## 4.2 Solution Structure (Both Targets Example)
+
+```
+Solution/
+  Blazor/
+  Maui/
+  Application/
+  Infrastructure/
+  Tests.Unit/
+  Tests.Blazor.Playwright/
+  Tests.Maui.Appium/
+```
+
+---
+
+# 5. Architecture
+
+## 5.1 Layers
+
+### Presentation
+
+* Blazor or MAUI UI
+
+### Application
+
+* viewmodels
+* orchestration logic
+
+### Infrastructure
+
+* API clients
+* HTTP handling
+
+### Contracts
+
+* external (project or NuGet)
+
+### Testing
+
+* unit
+* UI automation
+
+---
+
+# 6. Generation Flow
+
+1. Create solution scaffold
+2. Load Swagger
+3. Load Contracts
+4. Build metadata model
+5. Map endpoints to contract types
+6. Allow user selection
+7. Generate application
+8. Generate tests
+
+---
+
+# 7. Swagger Processing
+
+## 7.1 Extract
+
+* controllers/tags
+* endpoints
+* methods
+* routes
+* parameters
+
+## 7.2 Classify Endpoints
+
+* List
+* GetById
+* Create
+* Update
+* Delete
+* Search
+* Custom
+
+---
+
+# 8. Contracts Resolution
+
+## 8.1 Responsibilities
+
+* load assembly/project
+* resolve request/response types
+* map Swagger schema names to CLR types
+
+## 8.2 Failure Conditions
+
+* missing types
+* unresolved mappings
+
+Generation must fail early.
+
+---
+
+# 9. UI Generation
+
+## 9.1 Page Types
+
+### CRUD
+
+* list page (grid)
+* create page (form)
+* edit page (form)
+* delete actions
+
+### Search
+
+* filter panel
+* results grid
+
+---
+
+## 9.2 Generation Styles
+
+Per controller:
+
+* Grid
+* Form
+* Both
+* Search (if applicable)
+
+---
+
+# 10. Reusable Component System
+
+## 10.1 Requirement
+
+All UI must be composed from reusable components.
+
+---
+
+## 10.2 Blazor Components
+
+* DataGrid
+* Form
+* Field renderer
+* Search panel
+* Dialogs
+* Loading panel
+* Error panel
+
+---
+
+## 10.3 MAUI Components
+
+* Form controls
+* List/grid views
+* Page layout
+* Dialog system
+* Loading/error components
+
+---
+
+# 11. Centralized Styling
+
+## 11.1 Blazor
+
+* shared CSS files
+* theme variables
+* component styles
+
+## 11.2 MAUI
+
+* ResourceDictionaries
+* centralized colors
+* typography
+* spacing
+* control styles
+
+---
+
+# 12. Modal Dialog Engine
+
+## 12.1 Requirement
+
+All dialogs must use a centralized engine.
+
+---
+
+## 12.2 Interface
+
+```csharp
+public interface IDialogService
+{
+    Task ShowAlertAsync(string title, string message);
+    Task<bool> ShowConfirmAsync(string title, string message);
+}
+```
+
+---
+
+## 12.3 Rules
+
+* no inline dialogs
+* no direct platform calls
+* must be injectable
+* must be testable
+
+---
+
+# 13. API Client Generation
+
+## 13.1 Requirements
+
+* strongly typed
+* use contracts
+* async methods
+* no `ConfigureAwait`
+* explicit types
+
+---
+
+# 14. Naming Standards
+
+## 14.1 Rules
+
+* no unofficial abbreviations
+* descriptive names only
+
+---
+
+# 15. Async Standards
+
+## 15.1 Rules
+
+* use async/await
+* no blocking
+* no `ConfigureAwait`
+
+---
+
+# 16. Global Usings
+
+Each project must include:
+
+* `GlobalUsings.cs`
+
+---
+
+# 17. Testing
+
+## 17.1 Unit Tests
+
+* services
+* viewmodels
+* logic
+
+---
+
+## 17.2 Blazor UI Tests
+
+Use **Playwright**
+
+### Coverage
+
+* navigation
+* list page loads
+* form renders
+* CRUD flow
+
+---
+
+## 17.3 MAUI UI Tests
+
+Use **Appium**
+
+### Coverage
+
+* app launch
+* navigation
+* page access
+* basic workflows
+
+---
+
+## 17.4 Test Design
+
+* shared fixtures
+* reusable helpers
+* stable selectors
+
+---
+
+# 18. CLI
+
+## 18.1 Commands
+
+* generate
+* scan
+* preview
+
+---
+
+## 18.2 Example
+
+```
+canis-uiforge generate \
+  --name AdminPortal \
+  --swagger swagger.json \
+  --contracts-mode project \
+  --contracts-project ../Contracts.csproj \
+  --targets blazor,maui
+```
+
+---
+
+# 19. Avalonia UI
+
+## 19.1 Features
+
+* wizard setup
+* swagger explorer
+* controller selection
+* config builder
+* preview
+* generation log
+
+---
+
+# 20. Configuration File
+
+## Example
+
+```json
+{
+  "solutionName": "AdminPortal",
+  "targets": ["Blazor", "Maui"],
+  "swaggerSource": "swagger.json",
+  "contracts": {
+    "mode": "ProjectReference",
+    "projectPath": "../Contracts.csproj"
+  },
+  "controllers": [
+    {
+      "name": "Products",
+      "style": "FormAndGrid"
+    }
+  ],
+  "tests": {
+    "unit": true,
+    "playwright": true,
+    "appium": true
+  }
+}
+```
+
+---
+
+# 21. Regeneration Rules
+
+* overwrite generated files only
+* preserve manual files
+* support repeatable generation
+
+---
+
+# 22. Internal Generator Architecture
+
+## Projects
+
+* Core
+* OpenApi
+* Contracts
+* Generation
+* Blazor
+* Maui
+* Testing
+* CLI
+* Avalonia
+
+---
+
+# 23. Non-Functional Requirements
+
+## Maintainability
+
+* readable code
+* structured output
+
+## Reliability
+
+* generation must succeed consistently
+
+## Extensibility
+
+* template-driven
+* modular architecture
+
+---
+
+# 24. Implementation Phases
+
+## Phase 1
+
+* core + swagger + contracts
+
+## Phase 2
+
+* Blazor generation
+* unit + Playwright tests
+
+## Phase 3
+
+* MAUI generation
+* unit + Appium tests
+
+## Phase 4
+
+* Avalonia UI
+
+---
+
+# 25. Acceptance Criteria
+
+The generator is complete when it:
+
+* generates working Blazor app
+* generates working MAUI app
+* uses contracts for types
+* supports project/NuGet references
+* generates CRUD + search pages
+* generates reusable component-based UI
+* includes centralized styling
+* includes dialog system
+* includes unit tests
+* includes Playwright tests
+* includes Appium tests
+* supports safe regeneration
+
+---
+
+# 26. Summary
+
+CanisUIForge is a production-grade UI generator that:
+
+* builds applications from Swagger + Contracts
+* enforces strong engineering standards
+* produces maintainable, testable code
+* integrates cleanly into an existing generator ecosystem
+* supports both web and mobile UI generation
+* provides CLI and desktop tooling
