@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CanisUIForge.Core\CanisUIForge.Core.csproj" />
+    <ProjectReference Include="..\CanisUIForge.OpenApi\CanisUIForge.OpenApi.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Contracts\CanisUIForge.Contracts.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Generation\CanisUIForge.Generation.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+</Project>
