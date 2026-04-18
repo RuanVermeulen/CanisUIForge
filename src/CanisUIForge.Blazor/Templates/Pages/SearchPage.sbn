@@ -1,0 +1,88 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+@page "/{{ResourceNameLower}}/search"
+
+<PageTitle>Search {{ResourceName}}</PageTitle>
+
+<div class="page-header">
+    <h2>Search {{ResourceName}}</h2>
+</div>
+
+<SearchPanel SearchTerm="@_searchTerm"
+             SearchTermChanged="@(value => _searchTerm = value)"
+             OnSearch="HandleSearch"
+             Placeholder="Search {{ResourceNameLower}}..."
+             IsSearching="_isSearching" />
+
+@if (_isSearching)
+{
+    <LoadingPanel Message="Searching..." />
+}
+else if (_errorMessage is not null)
+{
+    <ErrorPanel Title="Error" Message="@_errorMessage" OnRetry="() => HandleSearch(_searchTerm)" />
+}
+else if (_hasSearched && _results.Count == 0)
+{
+    <EmptyState Title="No Results"
+                Message="No {{ResourceNameLower}} items match your search." />
+}
+else if (_results.Count > 0)
+{
+    <DataGrid TItem="{{ResponseTypeName}}" Items="_results" Columns="_columns"
+              OnEdit="HandleEdit" />
+}
+
+@code {
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private string _searchTerm = string.Empty;
+    private List<{{ResponseTypeName}}> _results = new List<{{ResponseTypeName}}>();
+    private List<DataGridColumn<{{ResponseTypeName}}>> _columns = new List<DataGridColumn<{{ResponseTypeName}}>>();
+    private bool _isSearching;
+    private bool _hasSearched;
+    private string? _errorMessage;
+
+    protected override void OnInitialized()
+    {
+        InitializeColumns();
+    }
+
+    private void InitializeColumns()
+    {
+        _columns = new List<DataGridColumn<{{ResponseTypeName}}>>
+        {
+{{GridColumnInitializers}}
+        };
+    }
+
+    private async Task HandleSearch(string searchTerm)
+    {
+        _isSearching = true;
+        _errorMessage = null;
+        _hasSearched = true;
+        StateHasChanged();
+
+        try
+        {
+            // TODO: Connect to I{{ResourceName}}ApiService search endpoint (Phase 9)
+            await Task.CompletedTask;
+            _results = new List<{{ResponseTypeName}}>();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSearching = false;
+            StateHasChanged();
+        }
+    }
+
+    private void HandleEdit({{ResponseTypeName}} item)
+    {
+        Navigation.NavigateTo($"{{ResourceNameLower}}/edit/{{{IdAccessor}}}");
+    }
+}

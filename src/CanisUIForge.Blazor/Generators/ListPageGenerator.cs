@@ -1,0 +1,43 @@
+using CanisUIForge.Generation.Models;
+using CanisUIForge.Generation.Output;
+using CanisUIForge.Generation.Templating;
+
+namespace CanisUIForge.Blazor.Generators;
+
+public class ListPageGenerator
+{
+    private readonly IFileWriter _fileWriter;
+    private readonly ITemplateEngine _templateEngine;
+    private readonly ITemplateLoader _templateLoader;
+
+    public ListPageGenerator(IFileWriter fileWriter, ITemplateEngine templateEngine, ITemplateLoader templateLoader)
+    {
+        _fileWriter = fileWriter ?? throw new ArgumentNullException(nameof(fileWriter));
+        _templateEngine = templateEngine ?? throw new ArgumentNullException(nameof(templateEngine));
+        _templateLoader = templateLoader ?? throw new ArgumentNullException(nameof(templateLoader));
+    }
+
+    public async Task GenerateAsync(GenerationPlan plan, ResolvedResource resource, string blazorProjectPath)
+    {
+        string filePath = Path.Combine(blazorProjectPath, "Pages", $"{resource.Name}List.razor");
+
+        ResolvedEndpoint? listEndpoint = PageGenerationHelper.FindEndpoint(resource, EndpointClassification.List);
+        string responseTypeName = PageGenerationHelper.GetResponseTypeName(listEndpoint, resource.Name);
+        string idPropertyName = PageGenerationHelper.GetIdPropertyName(listEndpoint?.ResponseType);
+        string gridColumnInitializers = PageGenerationHelper.BuildGridColumnInitializers(responseTypeName, listEndpoint?.ResponseType);
+
+        Dictionary<string, string> replacements = new Dictionary<string, string>
+        {
+            { "ResourceName", resource.Name },
+            { "ResourceNameLower", resource.Name.ToLowerInvariant() },
+            { "NamespaceRoot", plan.NamespaceRoot },
+            { "ResponseTypeName", responseTypeName },
+            { "GridColumnInitializers", gridColumnInitializers },
+            { "IdAccessor", $"item.{idPropertyName}" }
+        };
+
+        string template = _templateLoader.Load("Pages/ListPage");
+        string content = _templateEngine.Render(template, replacements);
+        await _fileWriter.WriteGeneratedFileAsync(filePath, content);
+    }
+}

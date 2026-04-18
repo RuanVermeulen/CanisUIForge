@@ -1,0 +1,94 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+@page "/{{ResourceNameLower}}"
+
+<PageTitle>{{ResourceName}} List</PageTitle>
+
+<div class="page-header">
+    <h2>{{ResourceName}} List</h2>
+    <a href="{{ResourceNameLower}}/create" class="btn btn-primary">Create New</a>
+</div>
+
+@if (_isLoading)
+{
+    <LoadingPanel Message="Loading {{ResourceNameLower}} items..." />
+}
+else if (_errorMessage is not null)
+{
+    <ErrorPanel Title="Error" Message="@_errorMessage" OnRetry="LoadItemsAsync" />
+}
+else if (_items.Count == 0)
+{
+    <EmptyState Title="No {{ResourceName}} Items"
+                Message="There are no {{ResourceNameLower}} items to display."
+                ActionLabel="Create"
+                OnAction="NavigateToCreate" />
+}
+else
+{
+    <DataGrid TItem="{{ResponseTypeName}}" Items="_items" Columns="_columns"
+              OnEdit="HandleEdit" OnDelete="HandleDelete" />
+}
+
+@code {
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private List<{{ResponseTypeName}}> _items = new List<{{ResponseTypeName}}>();
+    private List<DataGridColumn<{{ResponseTypeName}}>> _columns = new List<DataGridColumn<{{ResponseTypeName}}>>();
+    private bool _isLoading = true;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        InitializeColumns();
+        await LoadItemsAsync();
+    }
+
+    private void InitializeColumns()
+    {
+        _columns = new List<DataGridColumn<{{ResponseTypeName}}>>
+        {
+{{GridColumnInitializers}}
+        };
+    }
+
+    private async Task LoadItemsAsync()
+    {
+        _isLoading = true;
+        _errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            // TODO: Connect to I{{ResourceName}}ApiService (Phase 9)
+            await Task.CompletedTask;
+            _items = new List<{{ResponseTypeName}}>();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void HandleEdit({{ResponseTypeName}} item)
+    {
+        Navigation.NavigateTo($"{{ResourceNameLower}}/edit/{{{IdAccessor}}}");
+    }
+
+    private async Task HandleDelete({{ResponseTypeName}} item)
+    {
+        // TODO: Implement delete with IDialogService confirmation (Phase 9)
+        await Task.CompletedTask;
+    }
+
+    private void NavigateToCreate()
+    {
+        Navigation.NavigateTo("{{ResourceNameLower}}/create");
+    }
+}

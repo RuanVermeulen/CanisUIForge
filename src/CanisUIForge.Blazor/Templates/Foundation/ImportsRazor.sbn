@@ -8,3 +8,5 @@
 @using {{NamespaceRoot}}.Blazor
 @using {{NamespaceRoot}}.Blazor.Layout
 @using {{NamespaceRoot}}.Blazor.Pages
+@using {{NamespaceRoot}}.Blazor.Components.Shared
+@using {{NamespaceRoot}}.Blazor.Services

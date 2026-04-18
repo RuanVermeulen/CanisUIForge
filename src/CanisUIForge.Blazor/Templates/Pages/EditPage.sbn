@@ -1,0 +1,95 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+@page "/{{ResourceNameLower}}/edit/{Id{{IdRouteConstraint}}}"
+
+<PageTitle>Edit {{ResourceName}}</PageTitle>
+
+<div class="page-header">
+    <h2>Edit {{ResourceName}}</h2>
+</div>
+
+@if (_isLoading)
+{
+    <LoadingPanel Message="Loading {{ResourceNameLower}}..." />
+}
+else if (_errorMessage is not null)
+{
+    <ErrorPanel Title="Error" Message="@_errorMessage" OnRetry="LoadItemAsync" />
+}
+else if (_model is not null)
+{
+    <GenericForm TModel="{{RequestTypeName}}" Model="_model" OnValidSubmit="HandleSubmit" OnCancel="HandleCancel" SubmitLabel="Save" IsSubmitting="_isSubmitting">
+        <ChildContent Context="model">
+{{FormFields}}
+        </ChildContent>
+    </GenericForm>
+}
+
+@code {
+    [Parameter]
+    public {{IdPropertyType}} Id { get; set; }
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private {{RequestTypeName}}? _model;
+    private bool _isLoading = true;
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemAsync();
+    }
+
+    private async Task LoadItemAsync()
+    {
+        _isLoading = true;
+        _errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            // TODO: Connect to I{{ResourceName}}ApiService (Phase 9)
+            await Task.CompletedTask;
+            _model = new {{RequestTypeName}}();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            // TODO: Connect to I{{ResourceName}}ApiService (Phase 9)
+            await Task.CompletedTask;
+            Navigation.NavigateTo("{{ResourceNameLower}}");
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+    private void HandleCancel()
+    {
+        Navigation.NavigateTo("{{ResourceNameLower}}");
+    }
+}
