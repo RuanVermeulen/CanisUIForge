@@ -9,6 +9,8 @@ public class GenerateCommand : ICommand
     private readonly IGenerationPlanBuilder _planBuilder;
     private readonly GenerationExecutor _executor;
     private readonly IRegenerationTracker _tracker;
+    private readonly IForgeLogger _logger;
+    private readonly IPipelineValidator _pipelineValidator;
 
     public GenerateCommand(
         ConfigResolver configResolver,
@@ -17,7 +19,9 @@ public class GenerateCommand : ICommand
         IContractsResolver contractsResolver,
         IGenerationPlanBuilder planBuilder,
         GenerationExecutor executor,
-        IRegenerationTracker tracker)
+        IRegenerationTracker tracker,
+        IForgeLogger logger,
+        IPipelineValidator pipelineValidator)
     {
         _configResolver = configResolver ?? throw new ArgumentNullException(nameof(configResolver));
         _configValidator = configValidator ?? throw new ArgumentNullException(nameof(configValidator));
@@ -26,67 +30,89 @@ public class GenerateCommand : ICommand
         _planBuilder = planBuilder ?? throw new ArgumentNullException(nameof(planBuilder));
         _executor = executor ?? throw new ArgumentNullException(nameof(executor));
         _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _pipelineValidator = pipelineValidator ?? throw new ArgumentNullException(nameof(pipelineValidator));
     }
 
     public async Task<int> ExecuteAsync(CliOptions options)
     {
-        Console.WriteLine("Loading configuration...");
+        _logger.Log(ForgeLogLevel.Information, "Loading configuration...", "Config");
         ForgeConfig config = await _configResolver.ResolveAsync(options);
 
-        Console.WriteLine("Validating configuration...");
-        ConfigValidationResult validation = _configValidator.Validate(config);
+        _logger.Log(ForgeLogLevel.Information, "Validating configuration...", "Config");
+        ConfigValidationResult configValidation = _configValidator.Validate(config);
 
-        if (!validation.IsValid)
+        if (!configValidation.IsValid)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Error.WriteLine("Configuration validation failed:");
-
-            foreach (string error in validation.Errors)
+            foreach (string error in configValidation.Errors)
             {
-                Console.Error.WriteLine($"  - {error}");
+                _logger.Log(ForgeLogLevel.Error, error, "Config");
             }
 
-            Console.ResetColor();
             return 1;
         }
 
-        Console.WriteLine("Scanning Swagger...");
-        ApiDefinition apiDefinition = await _scanner.ScanAsync(config.SwaggerSource);
-        Console.WriteLine($"  Found {apiDefinition.Resources.Count} resource(s).");
+        _logger.Log(ForgeLogLevel.Information, "Validating contracts source...", "Contracts");
+        PipelineValidationResult contractsValidation = _pipelineValidator.ValidateContractsSource(config.Contracts);
 
-        Console.WriteLine("Resolving contracts...");
+        foreach (string warning in contractsValidation.Warnings)
+        {
+            _logger.Log(ForgeLogLevel.Warning, warning, "Contracts");
+        }
+
+        if (!contractsValidation.IsValid)
+        {
+            foreach (string error in contractsValidation.Errors)
+            {
+                _logger.Log(ForgeLogLevel.Error, error, "Contracts");
+            }
+
+            return 1;
+        }
+
+        _logger.Log(ForgeLogLevel.Information, "Scanning Swagger...", "OpenApi");
+        ApiDefinition apiDefinition = await _scanner.ScanAsync(config.SwaggerSource);
+        _logger.Log(ForgeLogLevel.Information, $"Found {apiDefinition.Resources.Count} resource(s).", "OpenApi");
+
+        _logger.Log(ForgeLogLevel.Information, "Resolving contracts...", "Contracts");
         ITypeRegistry typeRegistry = await _contractsResolver.ResolveAsync(config.Contracts);
 
-        Console.WriteLine("Building generation plan...");
+        _logger.Log(ForgeLogLevel.Information, "Validating type mappings...", "Contracts");
+        PipelineValidationResult schemaValidation = _pipelineValidator.ValidateSchemaResolution(apiDefinition, typeRegistry);
+
+        foreach (string warning in schemaValidation.Warnings)
+        {
+            _logger.Log(ForgeLogLevel.Warning, warning, "Contracts");
+        }
+
+        if (!schemaValidation.IsValid)
+        {
+            foreach (string error in schemaValidation.Errors)
+            {
+                _logger.Log(ForgeLogLevel.Error, error, "Contracts");
+            }
+
+            return 1;
+        }
+
+        _logger.Log(ForgeLogLevel.Information, "Building generation plan...", "Planning");
         GenerationPlan plan = _planBuilder.Build(config, apiDefinition, typeRegistry);
 
-        Console.WriteLine("Executing generation...");
+        _logger.Log(ForgeLogLevel.Information, "Executing generation...", "Generation");
         await _executor.ExecuteAsync(plan);
 
         RegenerationResult result = _tracker.GetResult();
-        Console.WriteLine();
-        Console.WriteLine($"  Files created:     {result.CreatedCount}");
-        Console.WriteLine($"  Files overwritten: {result.OverwrittenCount}");
-        Console.WriteLine($"  Files skipped:     {result.SkippedCount}");
+        _logger.Log(ForgeLogLevel.Information, $"Files created: {result.CreatedCount}, overwritten: {result.OverwrittenCount}, skipped: {result.SkippedCount}", "Summary");
 
         if (result.SkippedCount > 0)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine();
-            Console.WriteLine("  Skipped files (manual modifications preserved):");
-
             foreach (RegenerationEntry entry in result.GetEntriesByAction(RegenerationAction.Skipped))
             {
-                Console.WriteLine($"    - {entry.FilePath}");
+                _logger.Log(ForgeLogLevel.Warning, $"Skipped (manual): {entry.FilePath}", "Summary");
             }
-
-            Console.ResetColor();
         }
 
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Generation completed successfully!");
-        Console.ResetColor();
+        _logger.Log(ForgeLogLevel.Success, "Generation completed successfully!");
 
         return 0;
     }

@@ -4,14 +4,16 @@ public class GenerationViewModel : ViewModelBase
 {
     private readonly GenerationExecutor _executor;
     private readonly IRegenerationTracker _tracker;
+    private readonly IForgeLogger _logger;
 
-    public GenerationViewModel(GenerationExecutor executor, IRegenerationTracker tracker)
+    public GenerationViewModel(GenerationExecutor executor, IRegenerationTracker tracker, IForgeLogger logger)
     {
         _executor = executor ?? throw new ArgumentNullException(nameof(executor));
         _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public List<GenerationLogEntry> LogEntries { get; } = new List<GenerationLogEntry>();
+    public IReadOnlyList<ForgeLogEntry> LogEntries => _logger.Entries;
 
     public bool IsGenerating { get; private set; }
 
@@ -26,59 +28,53 @@ public class GenerationViewModel : ViewModelBase
     public async Task ExecuteAsync(GenerationPlan plan)
     {
         ClearErrors();
-        LogEntries.Clear();
+        _logger.Clear();
         IsGenerating = true;
         IsComplete = false;
         HasFailed = false;
 
         void OnStepStarted(string message)
         {
-            AppendLog(message, GenerationLogLevel.Info);
+            _logger.Log(ForgeLogLevel.Information, message, "Generation");
+        }
+
+        void OnEntryLogged(ForgeLogEntry entry)
+        {
+            LogUpdated?.Invoke();
         }
 
         try
         {
-            AppendLog("Starting generation...", GenerationLogLevel.Info);
+            _logger.EntryLogged += OnEntryLogged;
+            _logger.Log(ForgeLogLevel.Information, "Starting generation...", "Generation");
 
             _tracker.Reset();
             _executor.StepStarted += OnStepStarted;
             await _executor.ExecuteAsync(plan);
 
             RegenerationResult result = _tracker.GetResult();
-            AppendLog($"Files created: {result.CreatedCount}, overwritten: {result.OverwrittenCount}, skipped: {result.SkippedCount}", GenerationLogLevel.Info);
+            _logger.Log(ForgeLogLevel.Information, $"Files created: {result.CreatedCount}, overwritten: {result.OverwrittenCount}, skipped: {result.SkippedCount}", "Summary");
 
             if (result.SkippedCount > 0)
             {
-                AppendLog($"{result.SkippedCount} file(s) skipped (manual modifications preserved)", GenerationLogLevel.Warning);
+                _logger.Log(ForgeLogLevel.Warning, $"{result.SkippedCount} file(s) skipped (manual modifications preserved)", "Summary");
             }
 
-            AppendLog("Generation completed successfully!", GenerationLogLevel.Success);
+            _logger.Log(ForgeLogLevel.Success, "Generation completed successfully!");
             IsComplete = true;
         }
         catch (Exception exception)
         {
-            AppendLog($"Generation failed: {exception.Message}", GenerationLogLevel.Error);
+            _logger.Log(ForgeLogLevel.Error, $"Generation failed: {exception.Message}", "Generation");
             HasFailed = true;
             AddError(exception.Message);
         }
         finally
         {
             _executor.StepStarted -= OnStepStarted;
+            _logger.EntryLogged -= OnEntryLogged;
             IsGenerating = false;
             GenerationCompleted?.Invoke();
         }
-    }
-
-    private void AppendLog(string message, GenerationLogLevel level)
-    {
-        GenerationLogEntry entry = new GenerationLogEntry
-        {
-            Timestamp = DateTime.Now,
-            Message = message,
-            Level = level
-        };
-
-        LogEntries.Add(entry);
-        LogUpdated?.Invoke();
     }
 }

@@ -3,6 +3,7 @@ namespace CanisUIForge.Cli.Services;
 public class ServiceFactory
 {
     private readonly RegenerationTracker _tracker = new RegenerationTracker();
+    private readonly ConsoleForgeLogger _logger = new ConsoleForgeLogger();
     private readonly FileWriter _fileWriter;
     private readonly TemplateEngine _templateEngine = new TemplateEngine();
 
@@ -31,7 +32,9 @@ public class ServiceFactory
             CreateContractsResolver(),
             CreatePlanBuilder(),
             CreateGenerationExecutor(),
-            _tracker);
+            _tracker,
+            _logger,
+            new PipelineValidator());
     }
 
     private ScanCommand CreateScanCommand()

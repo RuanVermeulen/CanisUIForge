@@ -9,6 +9,8 @@ global using System.Threading.Tasks;
 global using CanisUIForge.Contracts.Registry;
 global using CanisUIForge.Core.Configuration;
 global using CanisUIForge.Core.Enums;
+global using CanisUIForge.Generation.Logging;
 global using CanisUIForge.Generation.Models;
 global using CanisUIForge.Generation.Unification;
+global using CanisUIForge.Generation.Validation;
 global using CanisUIForge.OpenApi.Models;
