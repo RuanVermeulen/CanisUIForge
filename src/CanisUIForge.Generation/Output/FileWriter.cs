@@ -2,6 +2,17 @@ namespace CanisUIForge.Generation.Output;
 
 public class FileWriter : IFileWriter
 {
+    private readonly IRegenerationTracker? _tracker;
+
+    public FileWriter()
+    {
+    }
+
+    public FileWriter(IRegenerationTracker tracker)
+    {
+        _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
+    }
+
     public async Task WriteGeneratedFileAsync(string filePath, string content)
     {
         if (string.IsNullOrWhiteSpace(filePath))
@@ -9,8 +20,25 @@ public class FileWriter : IFileWriter
             throw new ArgumentException("File path must not be null or empty.", nameof(filePath));
         }
 
-        EnsureDirectoryForFile(filePath);
-        await File.WriteAllTextAsync(filePath, content);
+        string markedContent = GeneratedFileHeader.AddHeader(filePath, content);
+
+        if (File.Exists(filePath))
+        {
+            if (GeneratedFileHeader.SupportsHeader(filePath) && !GeneratedFileHeader.IsGeneratedFile(filePath))
+            {
+                _tracker?.Record(filePath, RegenerationAction.Skipped);
+                return;
+            }
+
+            await File.WriteAllTextAsync(filePath, markedContent);
+            _tracker?.Record(filePath, RegenerationAction.Overwritten);
+        }
+        else
+        {
+            EnsureDirectoryForFile(filePath);
+            await File.WriteAllTextAsync(filePath, markedContent);
+            _tracker?.Record(filePath, RegenerationAction.Created);
+        }
     }
 
     public async Task WriteFileIfNotExistsAsync(string filePath, string content)
@@ -22,11 +50,13 @@ public class FileWriter : IFileWriter
 
         if (File.Exists(filePath))
         {
+            _tracker?.Record(filePath, RegenerationAction.Skipped);
             return;
         }
 
         EnsureDirectoryForFile(filePath);
         await File.WriteAllTextAsync(filePath, content);
+        _tracker?.Record(filePath, RegenerationAction.Created);
     }
 
     public void EnsureDirectoryExists(string directoryPath)

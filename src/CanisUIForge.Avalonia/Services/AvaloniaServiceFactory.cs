@@ -2,8 +2,14 @@ namespace CanisUIForge.Avalonia.Services;
 
 public class AvaloniaServiceFactory
 {
-    private readonly FileWriter _fileWriter = new FileWriter();
+    private readonly RegenerationTracker _tracker = new RegenerationTracker();
+    private readonly FileWriter _fileWriter;
     private readonly TemplateEngine _templateEngine = new TemplateEngine();
+
+    public AvaloniaServiceFactory()
+    {
+        _fileWriter = new FileWriter(_tracker);
+    }
 
     public WizardViewModel CreateWizardViewModel()
     {
@@ -16,7 +22,7 @@ public class AvaloniaServiceFactory
         SwaggerInputViewModel swaggerInput = new SwaggerInputViewModel(scanner);
         ControllerSelectionViewModel controllerSelection = new ControllerSelectionViewModel();
         PreviewViewModel preview = new PreviewViewModel(configValidator, scanner, contractsResolver, planBuilder);
-        GenerationViewModel generation = new GenerationViewModel(CreateGenerationExecutor());
+        GenerationViewModel generation = new GenerationViewModel(CreateGenerationExecutor(), _tracker);
 
         return new WizardViewModel(projectSetup, swaggerInput, controllerSelection, preview, generation);
     }

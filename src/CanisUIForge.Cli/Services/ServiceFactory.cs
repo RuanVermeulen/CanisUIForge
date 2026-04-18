@@ -2,8 +2,14 @@ namespace CanisUIForge.Cli.Services;
 
 public class ServiceFactory
 {
-    private readonly FileWriter _fileWriter = new FileWriter();
+    private readonly RegenerationTracker _tracker = new RegenerationTracker();
+    private readonly FileWriter _fileWriter;
     private readonly TemplateEngine _templateEngine = new TemplateEngine();
+
+    public ServiceFactory()
+    {
+        _fileWriter = new FileWriter(_tracker);
+    }
 
     public ICommand CreateCommand(CliCommand command)
     {
@@ -24,7 +30,8 @@ public class ServiceFactory
             CreateOpenApiScanner(),
             CreateContractsResolver(),
             CreatePlanBuilder(),
-            CreateGenerationExecutor());
+            CreateGenerationExecutor(),
+            _tracker);
     }
 
     private ScanCommand CreateScanCommand()

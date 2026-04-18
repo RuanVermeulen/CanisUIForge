@@ -8,6 +8,7 @@ public class GenerateCommand : ICommand
     private readonly IContractsResolver _contractsResolver;
     private readonly IGenerationPlanBuilder _planBuilder;
     private readonly GenerationExecutor _executor;
+    private readonly IRegenerationTracker _tracker;
 
     public GenerateCommand(
         ConfigResolver configResolver,
@@ -15,7 +16,8 @@ public class GenerateCommand : ICommand
         IOpenApiScanner scanner,
         IContractsResolver contractsResolver,
         IGenerationPlanBuilder planBuilder,
-        GenerationExecutor executor)
+        GenerationExecutor executor,
+        IRegenerationTracker tracker)
     {
         _configResolver = configResolver ?? throw new ArgumentNullException(nameof(configResolver));
         _configValidator = configValidator ?? throw new ArgumentNullException(nameof(configValidator));
@@ -23,6 +25,7 @@ public class GenerateCommand : ICommand
         _contractsResolver = contractsResolver ?? throw new ArgumentNullException(nameof(contractsResolver));
         _planBuilder = planBuilder ?? throw new ArgumentNullException(nameof(planBuilder));
         _executor = executor ?? throw new ArgumentNullException(nameof(executor));
+        _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
     }
 
     public async Task<int> ExecuteAsync(CliOptions options)
@@ -60,6 +63,27 @@ public class GenerateCommand : ICommand
         Console.WriteLine("Executing generation...");
         await _executor.ExecuteAsync(plan);
 
+        RegenerationResult result = _tracker.GetResult();
+        Console.WriteLine();
+        Console.WriteLine($"  Files created:     {result.CreatedCount}");
+        Console.WriteLine($"  Files overwritten: {result.OverwrittenCount}");
+        Console.WriteLine($"  Files skipped:     {result.SkippedCount}");
+
+        if (result.SkippedCount > 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
+            Console.WriteLine("  Skipped files (manual modifications preserved):");
+
+            foreach (RegenerationEntry entry in result.GetEntriesByAction(RegenerationAction.Skipped))
+            {
+                Console.WriteLine($"    - {entry.FilePath}");
+            }
+
+            Console.ResetColor();
+        }
+
+        Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Generation completed successfully!");
         Console.ResetColor();
