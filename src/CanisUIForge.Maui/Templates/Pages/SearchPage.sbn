@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- AUTO-GENERATED – DO NOT MODIFY -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:{{NamespaceRoot}}.Maui.Components"
+             x:Class="{{NamespaceRoot}}.Maui.Pages.{{ResourceName}}SearchPage"
+             Title="Search {{ResourceName}}">
+
+    <Grid RowDefinitions="Auto,*">
+        <components:SearchBarView x:Name="SearchBar" Grid.Row="0"
+                                   Placeholder="Search {{ResourceNameLower}}..."
+                                   SearchRequested="OnSearchRequested"
+                                   AutomationId="{{ResourceNameLower}}-search-bar" />
+
+        <components:LoadingIndicator x:Name="LoadingView" Grid.Row="1"
+                                      Message="Searching..."
+                                      IsVisible="False" />
+
+        <components:ErrorView x:Name="ErrorPanel" Grid.Row="1"
+                               ShowRetry="True"
+                               RetryClicked="OnRetryClicked"
+                               IsVisible="False" />
+
+        <components:EmptyStateView x:Name="EmptyPanel" Grid.Row="1"
+                                    Title="No Results"
+                                    Message="No {{ResourceNameLower}} items match your search."
+                                    IsVisible="False" />
+
+        <CollectionView x:Name="ResultsCollection" Grid.Row="1"
+                         SelectionMode="None"
+                         IsVisible="False"
+                         AutomationId="{{ResourceNameLower}}-search-results">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5,3" CornerRadius="4"
+                           BorderColor="{StaticResource BorderColor}">
+                        <Grid ColumnDefinitions="*,Auto" Padding="5">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+{{ItemTemplateContent}}
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="View"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="OnViewClicked"
+                                    VerticalOptions="Center"
+                                    AutomationId="view-button" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

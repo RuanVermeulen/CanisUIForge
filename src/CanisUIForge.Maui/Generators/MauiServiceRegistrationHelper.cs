@@ -6,9 +6,21 @@ public static class MauiServiceRegistrationHelper
     {
         StringBuilder builder = new StringBuilder();
 
+        builder.AppendLine($"        builder.Services.AddSingleton<Services.IDialogService, Services.MauiDialogService>();");
+        builder.AppendLine();
+
         foreach (ResolvedResource resource in resources)
         {
             builder.AppendLine($"        builder.Services.AddSingleton<I{resource.Name}ApiService, {resource.Name}ApiService>();");
+        }
+
+        builder.AppendLine();
+
+        foreach (ResolvedResource resource in resources)
+        {
+            builder.AppendLine($"        builder.Services.AddTransient<Pages.{resource.Name}ListPage>();");
+            builder.AppendLine($"        builder.Services.AddTransient<Pages.{resource.Name}CreatePage>();");
+            builder.AppendLine($"        builder.Services.AddTransient<Pages.{resource.Name}EditPage>();");
         }
 
         return builder.ToString().TrimEnd();

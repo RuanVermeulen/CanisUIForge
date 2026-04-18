@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- AUTO-GENERATED – DO NOT MODIFY -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:{{NamespaceRoot}}.Maui.Components"
+             x:Class="{{NamespaceRoot}}.Maui.Pages.{{ResourceName}}EditPage"
+             Title="Edit {{ResourceName}}">
+
+    <Grid RowDefinitions="*">
+        <components:LoadingIndicator x:Name="LoadingView"
+                                      Message="Loading {{ResourceNameLower}}..."
+                                      IsVisible="False" />
+
+        <components:ErrorView x:Name="ErrorPanel"
+                               ShowRetry="True"
+                               RetryClicked="OnRetryClicked"
+                               IsVisible="False" />
+
+        <ScrollView x:Name="FormContainer" Padding="15" IsVisible="False">
+            <VerticalStackLayout Spacing="15">
+                <VerticalStackLayout Spacing="10" AutomationId="{{ResourceNameLower}}-edit-form">
+{{FormFields}}
+                </VerticalStackLayout>
+
+                <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" Margin="0,10" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <Button x:Name="SubmitButton" Text="Save"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Clicked="OnSubmitClicked"
+                            AutomationId="{{ResourceNameLower}}-submit-button" />
+                    <Button Text="Cancel"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Clicked="OnCancelClicked"
+                            AutomationId="{{ResourceNameLower}}-cancel-button" />
+                </HorizontalStackLayout>
+
+                <ActivityIndicator x:Name="SubmittingIndicator"
+                                    IsRunning="False" IsVisible="False"
+                                    Color="{StaticResource Primary}" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>
