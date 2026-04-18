@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CanisUIForge.Generation\CanisUIForge.Generation.csproj" />
     <ProjectReference Include="..\CanisUIForge.Blazor\CanisUIForge.Blazor.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Maui\CanisUIForge.Maui.csproj" />
   </ItemGroup>
 
   <ItemGroup>
