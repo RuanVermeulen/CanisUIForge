@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- AUTO-GENERATED – DO NOT MODIFY -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="{{NamespaceRoot}}.Maui.Components.SearchBarView">
+
+    <HorizontalStackLayout Spacing="8"
+                           Padding="10"
+                           AutomationId="search-bar">
+        <Entry x:Name="SearchEntry"
+               Placeholder="Search..."
+               HorizontalOptions="FillAndExpand"
+               Completed="OnSearchCompleted"
+               AutomationId="search-entry" />
+        <Button x:Name="SearchButton"
+                Text="Search"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                CornerRadius="4"
+                Clicked="OnSearchClicked"
+                AutomationId="search-button" />
+        <Button x:Name="ClearButton"
+                Text="Clear"
+                BackgroundColor="{StaticResource Secondary}"
+                TextColor="White"
+                CornerRadius="4"
+                IsVisible="False"
+                Clicked="OnClearClicked"
+                AutomationId="clear-button" />
+    </HorizontalStackLayout>
+
+</ContentView>

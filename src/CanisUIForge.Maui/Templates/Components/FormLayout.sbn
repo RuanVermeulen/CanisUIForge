@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- AUTO-GENERATED – DO NOT MODIFY -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="{{NamespaceRoot}}.Maui.Components.FormLayout">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15"
+                             Padding="20"
+                             AutomationId="form-layout">
+            <Label x:Name="FormTitleLabel"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}"
+                   IsVisible="False" />
+
+            <VerticalStackLayout x:Name="FieldsContainer"
+                                 Spacing="10" />
+
+            <BoxView HeightRequest="1"
+                     Color="{StaticResource BorderColor}"
+                     Margin="0,10" />
+
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Start">
+                <Button x:Name="SubmitButton"
+                        Text="Save"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        CornerRadius="4"
+                        Clicked="OnSubmitClicked"
+                        AutomationId="submit-button" />
+                <Button x:Name="CancelButton"
+                        Text="Cancel"
+                        BackgroundColor="{StaticResource Secondary}"
+                        TextColor="White"
+                        CornerRadius="4"
+                        Clicked="OnCancelClicked"
+                        AutomationId="cancel-button" />
+            </HorizontalStackLayout>
+
+            <ActivityIndicator x:Name="SubmittingIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="{StaticResource Primary}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentView>

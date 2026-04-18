@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- AUTO-GENERATED – DO NOT MODIFY -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="{{NamespaceRoot}}.Maui.Components.EmptyStateView">
+
+    <VerticalStackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Spacing="10"
+                         Padding="30"
+                         AutomationId="empty-state">
+        <Label Text="&#xf01c;"
+               FontFamily="FluentIcons"
+               FontSize="48"
+               HorizontalOptions="Center"
+               TextColor="{StaticResource TextMuted}"
+               Opacity="0.5" />
+        <Label x:Name="TitleLabel"
+               Text="No items"
+               FontSize="18"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="{StaticResource TextPrimary}" />
+        <Label x:Name="MessageLabel"
+               Text="There are no items to display."
+               FontSize="14"
+               HorizontalOptions="Center"
+               TextColor="{StaticResource TextSecondary}" />
+        <Button x:Name="ActionButton"
+                Text="Create"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                CornerRadius="4"
+                IsVisible="False"
+                Clicked="OnActionClicked"
+                AutomationId="action-button" />
+    </VerticalStackLayout>
+
+</ContentView>

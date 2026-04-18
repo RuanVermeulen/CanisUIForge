@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- AUTO-GENERATED – DO NOT MODIFY -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="{{NamespaceRoot}}.Maui.Components.ErrorView">
+
+    <Frame BorderColor="{StaticResource Danger}"
+           BackgroundColor="{StaticResource DangerLight}"
+           Padding="15"
+           CornerRadius="8"
+           AutomationId="error-view">
+        <VerticalStackLayout Spacing="10">
+            <Label x:Name="TitleLabel"
+                   Text="Error"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Danger}" />
+            <Label x:Name="MessageLabel"
+                   Text="An unexpected error occurred."
+                   FontSize="14"
+                   TextColor="{StaticResource TextPrimary}" />
+            <Button x:Name="RetryButton"
+                    Text="Retry"
+                    BackgroundColor="{StaticResource Danger}"
+                    TextColor="White"
+                    CornerRadius="4"
+                    IsVisible="False"
+                    Clicked="OnRetryClicked"
+                    AutomationId="retry-button" />
+        </VerticalStackLayout>
+    </Frame>
+
+</ContentView>
