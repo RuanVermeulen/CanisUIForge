@@ -29,6 +29,10 @@ public class SearchPageGenerator
         string idPropertyName = PageGenerationHelper.GetIdPropertyName(responseEndpoint?.ResponseType);
         string gridColumnInitializers = PageGenerationHelper.BuildGridColumnInitializers(responseTypeName, responseEndpoint?.ResponseType);
 
+        string searchMethodName = searchEndpoint is not null
+            ? ApiServiceGenerationHelper.GetMethodName(searchEndpoint, resource.Name)
+            : $"Search{resource.Name}sAsync";
+
         Dictionary<string, string> replacements = new Dictionary<string, string>
         {
             { "ResourceName", resource.Name },
@@ -36,7 +40,8 @@ public class SearchPageGenerator
             { "NamespaceRoot", plan.NamespaceRoot },
             { "ResponseTypeName", responseTypeName },
             { "GridColumnInitializers", gridColumnInitializers },
-            { "IdAccessor", $"item.{idPropertyName}" }
+            { "IdAccessor", $"item.{idPropertyName}" },
+            { "SearchMethodName", searchMethodName }
         };
 
         string template = _templateLoader.Load("Pages/SearchPage");

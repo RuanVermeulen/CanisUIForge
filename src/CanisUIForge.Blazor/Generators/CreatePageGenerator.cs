@@ -25,13 +25,18 @@ public class CreatePageGenerator
         string requestTypeName = PageGenerationHelper.GetRequestTypeName(createEndpoint, resource.Name, "Create");
         string formFields = PageGenerationHelper.BuildFormFieldRenderers(createEndpoint?.RequestType);
 
+        string createMethodName = createEndpoint is not null
+            ? ApiServiceGenerationHelper.GetMethodName(createEndpoint, resource.Name)
+            : $"Create{resource.Name}Async";
+
         Dictionary<string, string> replacements = new Dictionary<string, string>
         {
             { "ResourceName", resource.Name },
             { "ResourceNameLower", resource.Name.ToLowerInvariant() },
             { "NamespaceRoot", plan.NamespaceRoot },
             { "RequestTypeName", requestTypeName },
-            { "FormFields", formFields }
+            { "FormFields", formFields },
+            { "CreateMethodName", createMethodName }
         };
 
         string template = _templateLoader.Load("Pages/CreatePage");

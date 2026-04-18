@@ -25,9 +25,21 @@ public class EditPageGenerator
         ResolvedEndpoint? getByIdEndpoint = PageGenerationHelper.FindEndpoint(resource, EndpointClassification.GetById);
 
         string requestTypeName = PageGenerationHelper.GetRequestTypeName(updateEndpoint, resource.Name, "Update");
+        string responseTypeName = PageGenerationHelper.GetResponseTypeName(getByIdEndpoint, resource.Name);
         string formFields = PageGenerationHelper.BuildFormFieldRenderers(updateEndpoint?.RequestType);
         string idPropertyType = PageGenerationHelper.GetIdPropertyTypeName(getByIdEndpoint?.ResponseType);
         string idRouteConstraint = PageGenerationHelper.GetIdRouteConstraint(getByIdEndpoint?.ResponseType);
+
+        string getByIdMethodName = getByIdEndpoint is not null
+            ? ApiServiceGenerationHelper.GetMethodName(getByIdEndpoint, resource.Name)
+            : $"Get{resource.Name}ByIdAsync";
+        string updateMethodName = updateEndpoint is not null
+            ? ApiServiceGenerationHelper.GetMethodName(updateEndpoint, resource.Name)
+            : $"Update{resource.Name}Async";
+
+        string editModelMapping = requestTypeName == responseTypeName
+            ? "result"
+            : $"new {requestTypeName}()";
 
         Dictionary<string, string> replacements = new Dictionary<string, string>
         {
@@ -35,9 +47,13 @@ public class EditPageGenerator
             { "ResourceNameLower", resource.Name.ToLowerInvariant() },
             { "NamespaceRoot", plan.NamespaceRoot },
             { "RequestTypeName", requestTypeName },
+            { "ResponseTypeName", responseTypeName },
             { "FormFields", formFields },
             { "IdPropertyType", idPropertyType },
-            { "IdRouteConstraint", idRouteConstraint }
+            { "IdRouteConstraint", idRouteConstraint },
+            { "GetByIdMethodName", getByIdMethodName },
+            { "UpdateMethodName", updateMethodName },
+            { "EditModelMapping", editModelMapping }
         };
 
         string template = _templateLoader.Load("Pages/EditPage");

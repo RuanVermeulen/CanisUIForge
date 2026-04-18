@@ -23,6 +23,9 @@
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private I{{ResourceName}}ApiService ApiService { get; set; } = default!;
+
     private {{RequestTypeName}} _model = new {{RequestTypeName}}();
     private bool _isSubmitting;
     private string? _errorMessage;
@@ -35,8 +38,7 @@
 
         try
         {
-            // TODO: Connect to I{{ResourceName}}ApiService (Phase 9)
-            await Task.CompletedTask;
+            await ApiService.{{CreateMethodName}}(_model);
             Navigation.NavigateTo("{{ResourceNameLower}}");
         }
         catch (Exception ex)

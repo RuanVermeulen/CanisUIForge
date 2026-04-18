@@ -32,6 +32,9 @@ else if (_model is not null)
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private I{{ResourceName}}ApiService ApiService { get; set; } = default!;
+
     private {{RequestTypeName}}? _model;
     private bool _isLoading = true;
     private bool _isSubmitting;
@@ -50,9 +53,8 @@ else if (_model is not null)
 
         try
         {
-            // TODO: Connect to I{{ResourceName}}ApiService (Phase 9)
-            await Task.CompletedTask;
-            _model = new {{RequestTypeName}}();
+            {{ResponseTypeName}} result = await ApiService.{{GetByIdMethodName}}(Id);
+            _model = {{EditModelMapping}};
         }
         catch (Exception ex)
         {
@@ -73,8 +75,7 @@ else if (_model is not null)
 
         try
         {
-            // TODO: Connect to I{{ResourceName}}ApiService (Phase 9)
-            await Task.CompletedTask;
+            await ApiService.{{UpdateMethodName}}(Id, _model);
             Navigation.NavigateTo("{{ResourceNameLower}}");
         }
         catch (Exception ex)

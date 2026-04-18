@@ -19,10 +19,14 @@ public class BlazorBootstrapGenerator
 
     public async Task GenerateAsync(GenerationPlan plan, string blazorProjectPath)
     {
+        string serviceRegistrations = ApiServiceGenerationHelper.BuildServiceRegistrations(
+            plan.Resources, plan.NamespaceRoot);
+
         Dictionary<string, string> replacements = new Dictionary<string, string>
         {
             { "NamespaceRoot", plan.NamespaceRoot },
-            { "SolutionName", plan.SolutionName }
+            { "SolutionName", plan.SolutionName },
+            { "ServiceRegistrations", serviceRegistrations }
         };
 
         await GenerateGlobalUsingsAsync(plan, blazorProjectPath, replacements);
