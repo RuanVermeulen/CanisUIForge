@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CanisUIForge.Core\CanisUIForge.Core.csproj" />
+    <ProjectReference Include="..\..\src\CanisUIForge.OpenApi\CanisUIForge.OpenApi.csproj" />
+    <ProjectReference Include="..\..\src\CanisUIForge.Contracts\CanisUIForge.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\CanisUIForge.Generation\CanisUIForge.Generation.csproj" />
+    <ProjectReference Include="..\..\src\CanisUIForge.Blazor\CanisUIForge.Blazor.csproj" />
+    <ProjectReference Include="..\..\src\CanisUIForge.Maui\CanisUIForge.Maui.csproj" />
+    <ProjectReference Include="..\..\src\CanisUIForge.Testing\CanisUIForge.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\swagger.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>TestData\swagger.json</Link>
+    </None>
+    <None Include="..\config\forge.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>TestData\forge.json</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

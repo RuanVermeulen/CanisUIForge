@@ -1,0 +1,30 @@
+{
+  "solutionName": "TestGenerated",
+  "targets": ["blazor"],
+  "swaggerSource": "../swagger.json",
+  "outputPath": "../output",
+  "namespaceRoot": "TestGenerated",
+  "contracts": {
+    "mode": "projectReference",
+    "projectPath": "../TestApi/TestApi.Contracts/TestApi.Contracts.csproj"
+  },
+  "controllers": [
+    {
+      "name": "Customers",
+      "style": "formAndGrid"
+    },
+    {
+      "name": "Products",
+      "style": "formAndGrid"
+    },
+    {
+      "name": "Orders",
+      "style": "grid"
+    }
+  ],
+  "tests": {
+    "unit": true,
+    "playwright": true,
+    "appium": false
+  }
+}
