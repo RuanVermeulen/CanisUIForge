@@ -4,6 +4,9 @@
     <ProjectReference Include="..\CanisUIForge.Generation\CanisUIForge.Generation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Templates/**/*.sbn" />
+  </ItemGroup>
 
 
 </Project>
