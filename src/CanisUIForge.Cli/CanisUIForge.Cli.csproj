@@ -5,6 +5,9 @@
     <ProjectReference Include="..\CanisUIForge.OpenApi\CanisUIForge.OpenApi.csproj" />
     <ProjectReference Include="..\CanisUIForge.Contracts\CanisUIForge.Contracts.csproj" />
     <ProjectReference Include="..\CanisUIForge.Generation\CanisUIForge.Generation.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Blazor\CanisUIForge.Blazor.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Maui\CanisUIForge.Maui.csproj" />
+    <ProjectReference Include="..\CanisUIForge.Testing\CanisUIForge.Testing.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
