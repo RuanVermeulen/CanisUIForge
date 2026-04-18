@@ -4,7 +4,7 @@
 
 <PageTitle>Search {{ResourceName}}</PageTitle>
 
-<div class="page-header">
+<div class="page-header" data-testid="{{ResourceNameLower}}-search-header">
     <h2>Search {{ResourceName}}</h2>
 </div>
 

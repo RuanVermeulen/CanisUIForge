@@ -4,9 +4,9 @@
 
 <PageTitle>{{ResourceName}} List</PageTitle>
 
-<div class="page-header">
+<div class="page-header" data-testid="{{ResourceNameLower}}-list-header">
     <h2>{{ResourceName}} List</h2>
-    <a href="{{ResourceNameLower}}/create" class="btn btn-primary">Create New</a>
+    <a href="{{ResourceNameLower}}/create" class="btn btn-primary" data-testid="{{ResourceNameLower}}-create-link">Create New</a>
 </div>
 
 @if (_isLoading)

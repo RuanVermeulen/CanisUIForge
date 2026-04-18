@@ -4,7 +4,7 @@
 
 <PageTitle>Edit {{ResourceName}}</PageTitle>
 
-<div class="page-header">
+<div class="page-header" data-testid="{{ResourceNameLower}}-edit-header">
     <h2>Edit {{ResourceName}}</h2>
 </div>
 

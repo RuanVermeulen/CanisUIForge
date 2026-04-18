@@ -4,7 +4,7 @@
 
 <PageTitle>Create {{ResourceName}}</PageTitle>
 
-<div class="page-header">
+<div class="page-header" data-testid="{{ResourceNameLower}}-create-header">
     <h2>Create {{ResourceName}}</h2>
 </div>
 

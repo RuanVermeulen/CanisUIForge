@@ -1,6 +1,6 @@
 @* AUTO-GENERATED – DO NOT MODIFY *@
 @* Any changes to this file will be overwritten during regeneration. *@
-<div class="error-panel alert alert-danger" role="alert">
+<div class="error-panel alert alert-danger" data-testid="error-panel" role="alert">
     <h4 class="alert-heading">@Title</h4>
     <p>@Message</p>
     @if (OnRetry.HasDelegate)

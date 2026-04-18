@@ -2,7 +2,7 @@
 @* Any changes to this file will be overwritten during regeneration. *@
 @typeparam TModel
 
-<div class="generic-form">
+<div class="generic-form" data-testid="generic-form">
     <EditForm Model="Model" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -13,7 +13,7 @@
         }
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary" disabled="@IsSubmitting">
+            <button type="submit" class="btn btn-primary" data-testid="submit-button" disabled="@IsSubmitting">
                 @if (IsSubmitting)
                 {
                     <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
@@ -22,7 +22,7 @@
             </button>
             @if (OnCancel.HasDelegate)
             {
-                <button type="button" class="btn btn-secondary ms-2" @onclick="OnCancel" disabled="@IsSubmitting">Cancel</button>
+                <button type="button" class="btn btn-secondary ms-2" data-testid="cancel-button" @onclick="OnCancel" disabled="@IsSubmitting">Cancel</button>
             }
         </div>
     </EditForm>

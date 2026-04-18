@@ -1,6 +1,6 @@
 @* AUTO-GENERATED – DO NOT MODIFY *@
 @* Any changes to this file will be overwritten during regeneration. *@
-<div class="search-panel">
+<div class="search-panel" data-testid="search-panel">
     <div class="input-group">
         <input type="text" class="form-control" placeholder="@Placeholder"
                value="@SearchTerm"
