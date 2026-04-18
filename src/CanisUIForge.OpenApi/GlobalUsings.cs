@@ -6,3 +6,8 @@ global using System.Net.Http;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using CanisUIForge.Core.Enums;
+global using CanisUIForge.OpenApi.Classification;
+global using CanisUIForge.OpenApi.Loading;
+global using CanisUIForge.OpenApi.Models;
+global using Microsoft.OpenApi.Models;
+global using Microsoft.OpenApi.Readers;

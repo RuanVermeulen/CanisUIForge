@@ -1,5 +1,3 @@
-using CanisUIForge.Core.Enums;
-
 namespace CanisUIForge.OpenApi.Models;
 
 public class EndpointDefinition

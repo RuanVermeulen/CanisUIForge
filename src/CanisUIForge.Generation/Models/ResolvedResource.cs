@@ -1,5 +1,3 @@
-using CanisUIForge.Core.Enums;
-
 namespace CanisUIForge.Generation.Models;
 
 public class ResolvedResource

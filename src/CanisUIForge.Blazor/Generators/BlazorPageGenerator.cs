@@ -1,6 +1,3 @@
-using CanisUIForge.Generation.Models;
-using CanisUIForge.Generation.Output;
-
 namespace CanisUIForge.Blazor.Generators;
 
 public class BlazorPageGenerator : IBlazorPageGenerator

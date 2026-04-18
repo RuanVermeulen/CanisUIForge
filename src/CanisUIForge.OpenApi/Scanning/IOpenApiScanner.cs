@@ -1,5 +1,3 @@
-using CanisUIForge.OpenApi.Models;
-
 namespace CanisUIForge.OpenApi.Scanning;
 
 public interface IOpenApiScanner

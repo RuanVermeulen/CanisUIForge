@@ -1,9 +1,3 @@
-using CanisUIForge.Core.Enums;
-using CanisUIForge.OpenApi.Classification;
-using CanisUIForge.OpenApi.Loading;
-using CanisUIForge.OpenApi.Models;
-using Microsoft.OpenApi.Models;
-
 namespace CanisUIForge.OpenApi.Scanning;
 
 public class OpenApiScanner : IOpenApiScanner

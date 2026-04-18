@@ -1,5 +1,3 @@
-using Microsoft.OpenApi.Models;
-
 namespace CanisUIForge.OpenApi.Loading;
 
 public interface ISwaggerLoader

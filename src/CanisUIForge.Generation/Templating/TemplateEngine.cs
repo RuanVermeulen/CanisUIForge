@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace CanisUIForge.Generation.Templating;
 
 public class TemplateEngine : ITemplateEngine

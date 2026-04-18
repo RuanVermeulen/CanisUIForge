@@ -1,6 +1,3 @@
-using CanisUIForge.Core.Enums;
-using CanisUIForge.OpenApi.Models;
-
 namespace CanisUIForge.Generation.Models;
 
 public class ResolvedEndpoint

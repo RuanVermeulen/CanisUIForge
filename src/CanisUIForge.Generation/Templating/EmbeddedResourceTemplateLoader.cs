@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace CanisUIForge.Generation.Templating;
 
 public class EmbeddedResourceTemplateLoader : ITemplateLoader

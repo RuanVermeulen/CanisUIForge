@@ -1,12 +1,3 @@
-using System.Reflection;
-using System.Runtime.Loader;
-using NuGet.Common;
-using NuGet.Configuration;
-using NuGet.Packaging;
-using NuGet.Protocol;
-using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
-
 namespace CanisUIForge.Contracts.Loading;
 
 public class NuGetReferenceLoader : IAssemblyLoader

@@ -8,6 +8,7 @@
         },
         "dotnet sln": true,
         "dotnet add": true,
-        "dotnet build": true
+        "dotnet build": true,
+        "awk": true
     }
 }

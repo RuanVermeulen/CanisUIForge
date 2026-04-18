@@ -1,6 +1,3 @@
-using System.Reflection;
-using CanisUIForge.Contracts.Registry;
-
 namespace CanisUIForge.Contracts.Mapping;
 
 public class SchemaTypeMapper : ISchemaTypeMapper

@@ -1,5 +1,3 @@
-using CanisUIForge.Core.Enums;
-
 namespace CanisUIForge.OpenApi.Classification;
 
 public class EndpointClassifier : IEndpointClassifier
