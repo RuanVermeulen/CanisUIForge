@@ -1,0 +1,20 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+<div class="alert-dialog">
+    <h5>@Title</h5>
+    <p>@Message</p>
+    <div class="dialog-actions">
+        <button class="btn btn-primary" @onclick="OnClose">OK</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+}

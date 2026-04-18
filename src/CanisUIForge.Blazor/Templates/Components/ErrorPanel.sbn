@@ -1,0 +1,22 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+<div class="error-panel alert alert-danger" role="alert">
+    <h4 class="alert-heading">@Title</h4>
+    <p>@Message</p>
+    @if (OnRetry.HasDelegate)
+    {
+        <hr />
+        <button class="btn btn-outline-danger" @onclick="OnRetry">Retry</button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Error";
+
+    [Parameter]
+    public string Message { get; set; } = "An unexpected error occurred.";
+
+    [Parameter]
+    public EventCallback OnRetry { get; set; }
+}

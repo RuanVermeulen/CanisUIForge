@@ -1,0 +1,71 @@
+/* AUTO-GENERATED – DO NOT MODIFY */
+/* Any changes to this file will be overwritten during regeneration. */
+
+/* Button overrides */
+.btn {
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+/* Card */
+.card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--space-md);
+    font-weight: 600;
+}
+
+.card-body {
+    padding: var(--space-lg);
+}
+
+/* Badge */
+.status-badge {
+    display: inline-block;
+    padding: 0.25em 0.65em;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+}
+
+.status-badge-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-badge-danger {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.status-badge-warning {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.status-badge-info {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+/* Form controls */
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem var(--primary-light);
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+}

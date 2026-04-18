@@ -8,11 +8,13 @@ public class HomePageGenerator
 {
     private readonly IFileWriter _fileWriter;
     private readonly ITemplateEngine _templateEngine;
+    private readonly ITemplateLoader _templateLoader;
 
-    public HomePageGenerator(IFileWriter fileWriter, ITemplateEngine templateEngine)
+    public HomePageGenerator(IFileWriter fileWriter, ITemplateEngine templateEngine, ITemplateLoader templateLoader)
     {
         _fileWriter = fileWriter ?? throw new ArgumentNullException(nameof(fileWriter));
         _templateEngine = templateEngine ?? throw new ArgumentNullException(nameof(templateEngine));
+        _templateLoader = templateLoader ?? throw new ArgumentNullException(nameof(templateLoader));
     }
 
     public async Task GenerateAsync(GenerationPlan plan, string blazorProjectPath)
@@ -27,24 +29,9 @@ public class HomePageGenerator
             { "ApiVersion", plan.ApiVersion }
         };
 
-        string content = _templateEngine.Render(HomePageTemplate, replacements);
+        string template = _templateLoader.Load("Foundation/HomePage");
+        string content = _templateEngine.Render(template, replacements);
         await _fileWriter.WriteGeneratedFileAsync(homePageFilePath, content);
     }
-
-    private const string HomePageTemplate =
-@"@* AUTO-GENERATED – DO NOT MODIFY *@
-@* Any changes to this file will be overwritten during regeneration. *@
-@page ""/""
-
-<PageTitle>{{SolutionName}}</PageTitle>
-
-<h1>{{SolutionName}}</h1>
-
-<p>Welcome to <strong>{{SolutionName}}</strong>.</p>
-
-<div class=""home-info"">
-    <p>API: <strong>{{ApiTitle}}</strong></p>
-    <p>Version: <strong>{{ApiVersion}}</strong></p>
-</div>
-";
 }
+

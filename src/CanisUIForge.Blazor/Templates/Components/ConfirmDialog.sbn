@@ -1,0 +1,24 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+<div class="confirm-dialog">
+    <h5>@Title</h5>
+    <p>@Message</p>
+    <div class="dialog-actions">
+        <button class="btn btn-danger" @onclick="OnConfirm">Confirm</button>
+        <button class="btn btn-secondary ms-2" @onclick="OnCancel">Cancel</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnConfirm { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

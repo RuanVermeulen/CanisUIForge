@@ -1,0 +1,94 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+<div class="mb-3">
+    <label class="form-label" for="@FieldId">@Label</label>
+
+    @switch (FieldType)
+    {
+        case "bool":
+        case "boolean":
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="@FieldId"
+                       checked="@(Value as bool? ?? false)"
+                       @onchange="HandleBoolChange"
+                       disabled="@IsReadOnly" />
+            </div>
+            break;
+
+        case "int":
+        case "long":
+        case "decimal":
+        case "double":
+        case "float":
+            <input type="number" class="form-control" id="@FieldId"
+                   value="@Value"
+                   @onchange="HandleChange"
+                   readonly="@IsReadOnly" />
+            break;
+
+        case "datetime":
+        case "datetimeoffset":
+            <input type="datetime-local" class="form-control" id="@FieldId"
+                   value="@Value"
+                   @onchange="HandleChange"
+                   readonly="@IsReadOnly" />
+            break;
+
+        case "date":
+            <input type="date" class="form-control" id="@FieldId"
+                   value="@Value"
+                   @onchange="HandleChange"
+                   readonly="@IsReadOnly" />
+            break;
+
+        case "textarea":
+            <textarea class="form-control" id="@FieldId"
+                      rows="4"
+                      @onchange="HandleChange"
+                      readonly="@IsReadOnly">@Value</textarea>
+            break;
+
+        default:
+            <input type="text" class="form-control" id="@FieldId"
+                   value="@Value"
+                   @onchange="HandleChange"
+                   readonly="@IsReadOnly" />
+            break;
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public string FieldId { get; set; } = string.Empty;
+
+    [Parameter]
+    public string FieldType { get; set; } = "string";
+
+    [Parameter]
+    public object? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<object?> ValueChanged { get; set; }
+
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+
+    private async Task HandleChange(ChangeEventArgs args)
+    {
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(args.Value);
+        }
+    }
+
+    private async Task HandleBoolChange(ChangeEventArgs args)
+    {
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(args.Value);
+        }
+    }
+}

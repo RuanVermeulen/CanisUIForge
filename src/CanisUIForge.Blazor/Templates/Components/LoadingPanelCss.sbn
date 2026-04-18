@@ -1,0 +1,17 @@
+/* AUTO-GENERATED – DO NOT MODIFY */
+/* Any changes to this file will be overwritten during regeneration. */
+
+.loading-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+}
+
+.loading-message {
+    margin-top: 1rem;
+    color: #6c757d;
+    font-size: 0.95rem;
+}

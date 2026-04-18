@@ -1,0 +1,60 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+@using {{NamespaceRoot}}.Blazor.Services
+@implements IDisposable
+@inject IDialogService DialogService
+
+@if (DialogService.IsVisible)
+{
+    <div class="dialog-overlay" @onclick="HandleOverlayClick">
+        <div class="dialog-container" @onclick:stopPropagation="true">
+            @switch (DialogService.DialogType)
+            {
+                case "confirm":
+                    <ConfirmDialog Title="@DialogService.Title"
+                                   Message="@DialogService.Message"
+                                   OnConfirm="HandleConfirm"
+                                   OnCancel="HandleCancel" />
+                    break;
+
+                case "alert":
+                    <AlertDialog Title="@DialogService.Title"
+                                 Message="@DialogService.Message"
+                                 OnClose="HandleAlertClose" />
+                    break;
+            }
+        </div>
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        DialogService.OnChange += StateHasChanged;
+    }
+
+    private void HandleOverlayClick()
+    {
+        DialogService.Close(false);
+    }
+
+    private void HandleConfirm()
+    {
+        DialogService.Close(true);
+    }
+
+    private void HandleCancel()
+    {
+        DialogService.Close(false);
+    }
+
+    private void HandleAlertClose()
+    {
+        DialogService.Close(true);
+    }
+
+    public void Dispose()
+    {
+        DialogService.OnChange -= StateHasChanged;
+    }
+}

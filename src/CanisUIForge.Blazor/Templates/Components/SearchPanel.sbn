@@ -1,0 +1,79 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+<div class="search-panel">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="@Placeholder"
+               value="@SearchTerm"
+               @oninput="HandleInput"
+               @onkeyup="HandleKeyUp" />
+        <button class="btn btn-primary" @onclick="HandleSearch" disabled="@IsSearching">
+            @if (IsSearching)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            }
+            else
+            {
+                <span>Search</span>
+            }
+        </button>
+        @if (!string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            <button class="btn btn-outline-secondary" @onclick="HandleClear">Clear</button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> SearchTermChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Search...";
+
+    [Parameter]
+    public bool IsSearching { get; set; }
+
+    private async Task HandleInput(ChangeEventArgs args)
+    {
+        SearchTerm = args.Value?.ToString() ?? string.Empty;
+        if (SearchTermChanged.HasDelegate)
+        {
+            await SearchTermChanged.InvokeAsync(SearchTerm);
+        }
+    }
+
+    private async Task HandleKeyUp(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter" && OnSearch.HasDelegate)
+        {
+            await OnSearch.InvokeAsync(SearchTerm);
+        }
+    }
+
+    private async Task HandleSearch()
+    {
+        if (OnSearch.HasDelegate)
+        {
+            await OnSearch.InvokeAsync(SearchTerm);
+        }
+    }
+
+    private async Task HandleClear()
+    {
+        SearchTerm = string.Empty;
+        if (SearchTermChanged.HasDelegate)
+        {
+            await SearchTermChanged.InvokeAsync(SearchTerm);
+        }
+        if (OnSearch.HasDelegate)
+        {
+            await OnSearch.InvokeAsync(SearchTerm);
+        }
+    }
+}

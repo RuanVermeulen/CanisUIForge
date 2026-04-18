@@ -1,0 +1,14 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+@page "/"
+
+<PageTitle>{{SolutionName}}</PageTitle>
+
+<h1>{{SolutionName}}</h1>
+
+<p>Welcome to <strong>{{SolutionName}}</strong>.</p>
+
+<div class="home-info">
+    <p>API: <strong>{{ApiTitle}}</strong></p>
+    <p>Version: <strong>{{ApiVersion}}</strong></p>
+</div>

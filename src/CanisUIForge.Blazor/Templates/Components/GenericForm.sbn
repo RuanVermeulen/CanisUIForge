@@ -1,0 +1,57 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@* Any changes to this file will be overwritten during regeneration. *@
+@typeparam TModel
+
+<div class="generic-form">
+    <EditForm Model="Model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        @if (ChildContent is not null)
+        {
+            @ChildContent(Model!)
+        }
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" disabled="@IsSubmitting">
+                @if (IsSubmitting)
+                {
+                    <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                }
+                @SubmitLabel
+            </button>
+            @if (OnCancel.HasDelegate)
+            {
+                <button type="button" class="btn btn-secondary ms-2" @onclick="OnCancel" disabled="@IsSubmitting">Cancel</button>
+            }
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public TModel? Model { get; set; }
+
+    [Parameter]
+    public RenderFragment<TModel>? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public string SubmitLabel { get; set; } = "Save";
+
+    [Parameter]
+    public bool IsSubmitting { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        if (OnValidSubmit.HasDelegate)
+        {
+            await OnValidSubmit.InvokeAsync();
+        }
+    }
+}

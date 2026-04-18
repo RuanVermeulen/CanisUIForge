@@ -1,0 +1,14 @@
+/* AUTO-GENERATED – DO NOT MODIFY */
+/* Any changes to this file will be overwritten during regeneration. */
+
+.generic-form {
+    max-width: 600px;
+}
+
+.form-actions {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+}

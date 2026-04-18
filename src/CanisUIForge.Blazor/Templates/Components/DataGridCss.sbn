@@ -1,0 +1,36 @@
+/* AUTO-GENERATED – DO NOT MODIFY */
+/* Any changes to this file will be overwritten during regeneration. */
+
+.data-grid {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-grid table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-grid th {
+    background-color: var(--grid-header-bg, #f8f9fa);
+    font-weight: 600;
+    padding: 0.75rem;
+    border-bottom: 2px solid #dee2e6;
+    text-align: left;
+}
+
+.data-grid td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.data-grid tbody tr:hover {
+    background-color: var(--grid-row-hover-bg, #f1f3f5);
+}
+
+.actions-column {
+    width: 150px;
+    text-align: center;
+    white-space: nowrap;
+}

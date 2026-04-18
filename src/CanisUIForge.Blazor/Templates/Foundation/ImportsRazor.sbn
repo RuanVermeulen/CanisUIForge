@@ -1,0 +1,10 @@
+@* AUTO-GENERATED – DO NOT MODIFY *@
+@using System.Net.Http
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using {{NamespaceRoot}}.Blazor
+@using {{NamespaceRoot}}.Blazor.Layout
+@using {{NamespaceRoot}}.Blazor.Pages
